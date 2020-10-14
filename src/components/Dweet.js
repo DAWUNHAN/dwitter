@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { dbService } from "fbase";
+import { dbService, storageService } from "fbase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 const Dweet = ({ dweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false);
   const [newDweet, setNewDweet] = useState(dweetObj.text);
   const onDeleteClick = async () => {
     const ok = window.confirm("Are you sure to delete?");
-    console.log(ok);
     if (ok) {
       await dbService.doc(`dweets/${dweetObj.id}`).delete();
+      await storageService.refFromURL(dweetObj.attachmentUrl).delete();
     }
   };
   const toggleEditing = () => setEditing((prev) => !prev);
@@ -27,29 +29,46 @@ const Dweet = ({ dweetObj, isOwner }) => {
     setNewDweet(value);
   };
   return (
-    <div>
+    <div className="dweet">
       {editing ? (
         <>
-          <form onSubmit={onSubmit}>
-            <input
-              type="text"
-              placeholder="Edit your dweet"
-              value={newDweet}
-              required
-              onChange={onChange}
-            ></input>
-            <input type="submit" value="Update Dweet"></input>
-          </form>
-          <button onClick={toggleEditing}>Cancle</button>
+          {isOwner && (
+            <>
+              <form onSubmit={onSubmit} className="container dweetEdit">
+                <input
+                  type="text"
+                  placeholder="Edit your dweet"
+                  value={newDweet}
+                  required
+                  autoFocus
+                  onChange={onChange}
+                  className="formInput"
+                ></input>
+                <input
+                  type="submit"
+                  value="Update Dweet"
+                  className="formBtn"
+                ></input>
+              </form>
+              <span onClick={toggleEditing} className="formBtn cancelBtn">
+                Cancel
+              </span>
+            </>
+          )}
         </>
       ) : (
         <>
           <h4>{dweetObj.text}</h4>
+          {dweetObj.attachmentUrl && <img src={dweetObj.attachmentUrl} />}
           {isOwner && (
-            <>
-              <button onClick={onDeleteClick}>Delet Dweet</button>
-              <button onClick={toggleEditing}>Edit Dweet</button>
-            </>
+            <div class="dweet__actions">
+              <span onClick={onDeleteClick}>
+                <FontAwesomeIcon icon={faTrash} />
+              </span>
+              <span onClick={toggleEditing}>
+                <FontAwesomeIcon icon={faPencilAlt} />
+              </span>
+            </div>
           )}
         </>
       )}

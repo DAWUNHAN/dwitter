@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { dbService } from "fbase";
+import { dbService, storageService } from "fbase";
 import Dweet from "components/Dweet";
+import DweetFactory from "components/DweetFactory";
 
 const Home = ({ userObj }) => {
-  const [dweet, setDweet] = useState("");
   const [dweets, setDweets] = useState([]);
-
   useEffect(() => {
     dbService.collection("dweets").onSnapshot((snapshot) => {
       const dweetArray = snapshot.docs.map((doc) => ({
@@ -15,34 +14,11 @@ const Home = ({ userObj }) => {
       setDweets(dweetArray);
     });
   }, []);
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    await dbService.collection("dweets").add({
-      text: dweet,
-      createdAt: Date.now(),
-      creatorId: userObj.uid,
-    });
-    setDweet("");
-  };
-  const onChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setDweet(value);
-  };
+
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <input
-          value={dweet}
-          onChange={onChange}
-          type="text"
-          placeholder="What's on your mind?"
-          maxLength={120}
-        ></input>
-        <input type="submit" value="Dwitter"></input>
-      </form>
-      <div>
+    <div className="container">
+      <DweetFactory userObj={userObj}></DweetFactory>
+      <div style={{ marginTop: 30 }}>
         {dweets.map((dweet) => (
           <Dweet
             key={dweet.id}
