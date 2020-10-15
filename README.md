@@ -11,8 +11,8 @@
 
 ## Author
 
-### Terry Dawun Han
+- Terry Dawun Han
 
-### dawun.han@gmail.com
+- dawun.han@gmail.com
 
-### [Portfolio](https://dawunhan.com)
+- [Portfolio](https://dawunhan.com)
