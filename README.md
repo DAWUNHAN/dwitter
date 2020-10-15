@@ -11,7 +11,7 @@
 
 ## Author
 
-- Terry Dawun Han
+- Terry Dawun Han located in Sydeny, Australia
 
 - dawun.han@gmail.com
 
