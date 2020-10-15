@@ -2,6 +2,7 @@
   "name": "dwitter",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://unruffled-williams-49cf07.netlify.app",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
